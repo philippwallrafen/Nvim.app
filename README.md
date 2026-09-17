@@ -6,6 +6,10 @@ Press `⌘ Space`, search for `Nvim`, and hit Enter.
 
 When you quit Neovim with `:q`, the iTerm2 window closes with it.
 
+<p align="center">
+  <img src="docs/images/nvim-app.png" alt="Nvim.app in the macOS Applications folder" width="760">
+</p>
+
 ## Installation
 
 Recommended: build and install locally.
