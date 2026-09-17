@@ -4,11 +4,46 @@ A small macOS launcher that opens **Neovim in iTerm2 from Spotlight**.
 
 Press `⌘ Space`, search for `Nvim`, and hit Enter.
 
-## Why?
+When you quit Neovim with `:q`, the iTerm2 window closes with it.
 
-Neovim installs as a terminal application on macOS, so there is no native `Nvim.app` to launch from Spotlight.
+## Installation
 
-This project provides a minimal `.app` wrapper without adding a Neovim GUI.
+Recommended: build and install locally.
+
+```sh
+brew install neovim
+brew install --cask iterm2
+
+git clone https://github.com/philippwallrafen/nvim-iterm2-app.git
+cd nvim-iterm2-app
+./nvim-app.sh install
+```
+
+The script builds `Nvim.app`, signs it locally, installs it to `/Applications`, and registers it with macOS.
+
+Then launch it with:
+
+```text
+⌘ Space → Nvim → Enter
+```
+
+macOS may ask for permission to let Nvim control iTerm2 on first launch. Allow it.
+
+## Other commands
+
+```sh
+./nvim-app.sh build
+./nvim-app.sh package
+```
+
+- `build` creates `dist/Nvim.app`
+- `package` creates `dist/Nvim.app.zip`
+
+## Prebuilt release
+
+You can also download `Nvim.app.zip` from the latest GitHub Release, extract it, and move `Nvim.app` to `/Applications`.
+
+The prebuilt release is ad-hoc signed, not Apple-notarized. macOS may require **right-click → Open** on first launch.
 
 ## Requirements
 
@@ -16,41 +51,9 @@ This project provides a minimal `.app` wrapper without adding a Neovim GUI.
 - [Neovim](https://neovim.io/)
 - [iTerm2](https://iterm2.com/)
 
-With Homebrew:
-
-```sh
-brew install neovim
-brew install --cask iterm2
-```
-
-## Install
-
-Download `Nvim.app.zip` from the latest GitHub Release, extract it, and move `Nvim.app` to `/Applications`.
-
-The release is ad-hoc signed, not Apple-notarized. If macOS blocks the first launch, right-click `Nvim.app` and choose **Open**, or build it locally.
-
-## Build
-
-```sh
-./build.sh
-```
-
-Output:
-
-```text
-dist/Nvim.app
-dist/Nvim.app.zip
-```
-
-Build and install:
-
-```sh
-./install.sh
-```
-
 ## How it works
 
-The launcher starts iTerm2 if necessary and opens exactly one iTerm2 window running `nvim`. Quitting Neovim returns to the normal shell.
+`Nvim.app` is a small AppleScript launcher. It opens Neovim in iTerm2 using `exec nvim`, so quitting Neovim ends that terminal session and closes the window.
 
 Neovim itself is not bundled.
 
@@ -58,8 +61,7 @@ Neovim itself is not bundled.
 
 This is an unofficial project and is not affiliated with or endorsed by Neovim or iTerm2.
 
-The app icon is derived from the official Neovim mark:
-https://neovim.io/logos/
+The app icon is derived from the official [Neovim mark](https://neovim.io/logos/).
 
 ## License
 

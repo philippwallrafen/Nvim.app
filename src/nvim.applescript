@@ -4,20 +4,18 @@ tell application "iTerm2"
     launch
 
     if wasRunning then
-        set nvimWindow to (create window with default profile)
+        create window with default profile command "/bin/zsh -lic 'exec nvim'"
     else
         delay 0.5
 
         if (count of windows) > 0 then
-            set nvimWindow to current window
+            tell current session of current window
+                write text "exec nvim"
+            end tell
         else
-            set nvimWindow to (create window with default profile)
+            create window with default profile command "/bin/zsh -lic 'exec nvim'"
         end if
     end if
-
-    tell current session of nvimWindow
-        write text "nvim"
-    end tell
 
     activate
 end tell
