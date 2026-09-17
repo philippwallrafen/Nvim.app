@@ -2,21 +2,29 @@
 set -eu
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
+APP="/Applications/Nvim.app"
 
 "$ROOT/build.sh"
 
-sudo rm -rf /Applications/Nvim.app
-sudo ditto "$ROOT/dist/Nvim.app" /Applications/Nvim.app
+sudo rm -rf "$APP"
+sudo ditto "$ROOT/dist/Nvim.app" "$APP"
 
-sudo codesign --force --deep --sign - /Applications/Nvim.app
-sudo touch /Applications/Nvim.app
+sudo codesign \
+  --force \
+  --deep \
+  --sign - \
+  "$APP"
 
-mdimport /Applications/Nvim.app
+sudo touch "$APP"
+
+mdimport "$APP"
 
 /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister \
-  -f /Applications/Nvim.app
+  -f "$APP"
 
 killall Finder 2>/dev/null || true
 killall Dock 2>/dev/null || true
 
-echo "Installed /Applications/Nvim.app"
+echo
+echo "Installed:"
+echo "  $APP"

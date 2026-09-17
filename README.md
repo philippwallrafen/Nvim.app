@@ -8,7 +8,7 @@ Press `⌘ Space`, search for `Nvim`, and hit Enter.
 
 Neovim installs as a terminal application on macOS, so there is no native `Nvim.app` to launch from Spotlight.
 
-This project provides a minimal `.app` wrapper without replacing Neovim or adding a GUI frontend.
+This project provides a minimal `.app` wrapper without adding a Neovim GUI.
 
 ## Requirements
 
@@ -27,11 +27,7 @@ brew install --cask iterm2
 
 Download `Nvim.app.zip` from the latest GitHub Release, extract it, and move `Nvim.app` to `/Applications`.
 
-If macOS requires the app to be re-signed:
-
-```sh
-codesign --force --deep --sign - /Applications/Nvim.app
-```
+The release is ad-hoc signed, not Apple-notarized. If macOS blocks the first launch, right-click `Nvim.app` and choose **Open**, or build it locally.
 
 ## Build
 
@@ -46,7 +42,7 @@ dist/Nvim.app
 dist/Nvim.app.zip
 ```
 
-To build and install directly:
+Build and install:
 
 ```sh
 ./install.sh
@@ -54,6 +50,17 @@ To build and install directly:
 
 ## How it works
 
-The launcher is a small AppleScript app. It starts iTerm2 if necessary and opens exactly one iTerm2 window running `nvim`.
+The launcher starts iTerm2 if necessary and opens exactly one iTerm2 window running `nvim`. Quitting Neovim returns to the normal shell.
 
 Neovim itself is not bundled.
+
+## Disclaimer
+
+This is an unofficial project and is not affiliated with or endorsed by Neovim or iTerm2.
+
+The app icon is derived from the official Neovim mark:
+https://neovim.io/logos/
+
+## License
+
+MIT
