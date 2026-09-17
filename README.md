@@ -61,7 +61,7 @@ Neovim itself is not bundled.
 
 This is an unofficial project and is not affiliated with or endorsed by Neovim or iTerm2.
 
-The app icon is derived from the official [Neovim mark](https://neovim.io/logos/).
+The app icon is derived from the official [Neovim logo assets](https://github.com/neovim/neovim.github.io/tree/master/static/logos).
 
 ## License
 
