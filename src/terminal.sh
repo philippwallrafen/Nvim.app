@@ -86,10 +86,12 @@ prompt() {
     done
 
     picked="$(NVIM_TERMINALS="$labels" /usr/bin/osascript \
+        -e 'on run' \
         -e 'set choices to paragraphs of (system attribute "NVIM_TERMINALS")' \
-        -e 'set picked to choose from list choices with title "Nvim.app" with prompt "Choose a terminal for Nvim.app:" OK button name "Use"' \
+        -e 'set picked to choose from list choices with title "Nvim.app" with prompt "Choose a terminal for Nvim.app:"' \
         -e 'if picked is false then return ""' \
-        -e 'return item 1 of picked')"
+        -e 'return picked as text' \
+        -e 'end run')"
 
     case "$picked" in
         Ghostty) echo ghostty ;;
