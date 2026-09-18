@@ -78,6 +78,13 @@ The preference is stored in macOS defaults under:
 io.github.philippwallrafen.nvim-app
 ```
 
+If you installed only the prebuilt app, you can change it directly:
+
+```sh
+defaults write io.github.philippwallrafen.nvim-app terminal ghostty
+defaults delete io.github.philippwallrafen.nvim-app terminal
+```
+
 ## Open files from Finder
 
 After installation, Nvim is registered as an editor for text files.
