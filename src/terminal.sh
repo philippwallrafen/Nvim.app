@@ -54,20 +54,15 @@ app_bin() {
 prompt() {
     labels=""
     for t in "$@"; do
-        labels="${labels}${labels:+|}$(name "$t")"
+        labels="${labels}${labels:+
+}$(name "$t")"
     done
 
-    picked="$(NVIM_TERMINALS="$labels" /usr/bin/osascript <<'EOF_AS'
-set oldDelimiters to AppleScript's text item delimiters
-set AppleScript's text item delimiters to "|"
-set choices to text items of (system attribute "NVIM_TERMINALS")
-set AppleScript's text item delimiters to oldDelimiters
-
-set picked to choose from list choices with title "Nvim.app" with prompt "Choose a terminal for Nvim.app:" OK button name "Use"
-if picked is false then return ""
-return item 1 of picked
-EOF_AS
-)"
+    picked="$(NVIM_TERMINALS="$labels" /usr/bin/osascript \
+        -e 'set choices to paragraphs of (system attribute "NVIM_TERMINALS")' \
+        -e 'set picked to choose from list choices with title "Nvim.app" with prompt "Choose a terminal for Nvim.app:" OK button name "Use"' \
+        -e 'if picked is false then return ""' \
+        -e 'return item 1 of picked')"
 
     case "$picked" in
         Ghostty) echo ghostty ;;
