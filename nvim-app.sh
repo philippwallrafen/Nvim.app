@@ -8,7 +8,7 @@ INSTALLED_APP="/Applications/Nvim.app"
 ZIP="$DIST/Nvim.app.zip"
 
 VERSION="$(cat "$ROOT/VERSION")"
-APP_ID="io.github.philippwallrafen.nvim-iterm2-app"
+APP_ID="io.github.philippwallrafen.nvim-app"
 
 set_string() {
     key="$1"
@@ -54,9 +54,8 @@ build_app() {
         "$BUILT_APP/Contents/Resources/Nvim.icns"
 
     cp \
-        "$ROOT/src/backends/iterm.applescript" \
-        "$ROOT/src/backends/terminal.applescript" \
-        "$BUILT_APP/Contents/Resources/"
+        "$ROOT/src/terminal.sh" \
+        "$BUILT_APP/Contents/Resources/terminal.sh"
 
     rm -f \
         "$BUILT_APP/Contents/Resources/applet.icns" \
@@ -69,7 +68,7 @@ build_app() {
     set_string CFBundleVersion "$VERSION"
     set_string CFBundleIconFile "Nvim"
     set_string NSAppleEventsUsageDescription \
-        "Nvim uses Apple Events to open Neovim in iTerm2 or Terminal."
+        "Nvim uses Apple Events to open Neovim in the selected terminal."
 
     set_document_types
 
@@ -141,17 +140,23 @@ package_app() {
     echo "  $ZIP"
 }
 
+terminal_preference() {
+    /bin/sh "$ROOT/src/terminal.sh" preference "${1:-show}"
+}
+
 usage() {
     cat <<'EOF_USAGE'
 Usage:
   ./nvim-app.sh build
   ./nvim-app.sh install
   ./nvim-app.sh package
+  ./nvim-app.sh terminal [show|choose|auto|ghostty|iterm2|warp|alacritty|terminal]
 
 Commands:
   build     Build dist/Nvim.app
   install   Build and install Nvim.app to /Applications
   package   Build and create dist/Nvim.app.zip
+  terminal  Show or change the preferred terminal
 EOF_USAGE
 }
 
@@ -164,6 +169,9 @@ case "${1:-}" in
         ;;
     package)
         package_app
+        ;;
+    terminal)
+        terminal_preference "${2:-show}"
         ;;
     help|-h|--help|"")
         usage
