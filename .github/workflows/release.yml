@@ -70,8 +70,8 @@ jobs:
         run: |
           TAG="${GITHUB_REF_NAME}"
 
-          if [[ "$TAG" == "v0.3" ]]; then
-            NOTES='Adds support for Ghostty, Alacritty, Tabby, Kitty, iTerm2, WezTerm, Rio, and Terminal.app. Nvim.app prompts when multiple supported terminals are installed, remembers the selected terminal, and uses the io.github.philippwallrafen.nvim-app bundle/settings identifier.'
+          if [[ "$TAG" == "v0.3.1" ]]; then
+            NOTES='Fixes the terminal chooser AppleScript used when multiple supported terminals are installed and adds a compile check in CI so chooser syntax errors are caught before release.'
             gh release create "$TAG" dist/Nvim.app.zip --title "Nvim.app $TAG" --notes "$NOTES"
           else
             gh release create "$TAG" dist/Nvim.app.zip --title "Nvim.app $TAG" --generate-notes
