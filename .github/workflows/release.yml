@@ -33,7 +33,15 @@ jobs:
           fi
 
       - name: Validate launcher
-        run: /bin/sh -n src/terminal.sh
+        run: |
+          /bin/sh -n src/terminal.sh
+          /usr/bin/osacompile -o /tmp/terminal-chooser.scpt \
+            -e 'on run' \
+            -e 'set choices to paragraphs of (system attribute "NVIM_TERMINALS")' \
+            -e 'set picked to choose from list choices with title "Nvim.app" with prompt "Choose a terminal for Nvim.app:"' \
+            -e 'if picked is false then return ""' \
+            -e 'return picked as text' \
+            -e 'end run'
 
       - name: Build package
         run: |
