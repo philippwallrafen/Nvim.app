@@ -4,28 +4,19 @@
 
 # Nvim.app
 
-A macOS app wrapper for Neovim, with optional iTerm2 integration.
+A macOS app wrapper for Neovim.
 
-Launch Neovim from Spotlight, Finder, or the command line without opening a terminal first. Nvim.app uses iTerm2 when it is installed and falls back to the built-in Terminal.app otherwise.
-
-Press `⌘ Space`, search for `Nvim`, and hit Enter.
+Launch Neovim from Spotlight, Finder, or the command line using Terminal.app, Ghostty, iTerm2, Warp, or Alacritty.
 
 ## Installation
-
-Recommended: build and install locally.
 
 ```sh
 brew install neovim
 
-# Optional: use iTerm2 instead of Terminal.app.
-brew install --cask iterm2
-
-git clone https://github.com/philippwallrafen/nvim-iterm2-app.git
-cd nvim-iterm2-app
+git clone https://github.com/philippwallrafen/Nvim.app.git
+cd Nvim.app
 ./nvim-app.sh install
 ```
-
-The script builds `Nvim.app`, signs it locally, installs it to `/Applications`, and registers it with macOS.
 
 Then launch it with:
 
@@ -33,7 +24,59 @@ Then launch it with:
 ⌘ Space → Nvim → Enter
 ```
 
-macOS may ask for permission to let Nvim control iTerm2 or Terminal on first launch. Allow it.
+macOS may ask for permission to let Nvim control your terminal on first launch.
+
+## Terminal selection
+
+Supported terminals:
+
+- Terminal.app
+- Ghostty
+- iTerm2
+- Warp
+- Alacritty
+
+No third-party terminal is required.
+
+If no preference is saved:
+
+- with no supported third-party terminal installed, Nvim.app uses Terminal.app
+- with exactly one installed, Nvim.app uses it automatically
+- with multiple installed, Nvim.app asks which one to use and remembers the choice
+
+Show the current preference:
+
+```sh
+./nvim-app.sh terminal
+```
+
+Choose again:
+
+```sh
+./nvim-app.sh terminal choose
+```
+
+Set one explicitly:
+
+```sh
+./nvim-app.sh terminal ghostty
+./nvim-app.sh terminal iterm2
+./nvim-app.sh terminal warp
+./nvim-app.sh terminal alacritty
+./nvim-app.sh terminal terminal
+```
+
+Reset the saved preference so Nvim.app selects again:
+
+```sh
+./nvim-app.sh terminal auto
+```
+
+The preference is stored in macOS defaults under:
+
+```text
+io.github.philippwallrafen.nvim-app
+```
 
 ## Open files from Finder
 
@@ -45,7 +88,7 @@ In Finder, right-click a text file and choose:
 Open With → Nvim
 ```
 
-The file opens in Neovim using iTerm2 when available, otherwise Terminal.app.
+The file is passed to Neovim in the selected terminal.
 
 <!--
 Screenshot placeholder:
@@ -64,15 +107,6 @@ open -a Nvim README.md
 
 To make Nvim the default editor for a file type, select a file in Finder, choose **Get Info**, select **Nvim** under **Open with**, then click **Change All**.
 
-## Terminal integration
-
-Nvim.app chooses a terminal backend at runtime:
-
-- **iTerm2** when it is installed
-- **Terminal.app** otherwise
-
-iTerm2 is optional and is not required to build or install Nvim.app.
-
 ## Other commands
 
 ```sh
@@ -83,7 +117,7 @@ iTerm2 is optional and is not required to build or install Nvim.app.
 - `build` creates `dist/Nvim.app`
 - `package` creates `dist/Nvim.app.zip`
 
-The build only requires macOS. Terminal-specific integration is loaded at runtime.
+The build only requires macOS. Third-party terminals are runtime integrations and are not required to build the app.
 
 ## Prebuilt release
 
@@ -95,21 +129,23 @@ The prebuilt release is ad-hoc signed, not Apple-notarized. macOS may require **
 
 - macOS
 - [Neovim](https://neovim.io/)
-- [iTerm2](https://iterm2.com/) (optional)
+
+Optional terminal integrations:
+
+- [Ghostty](https://ghostty.org/)
+- [iTerm2](https://iterm2.com/)
+- [Warp](https://www.warp.dev/)
+- [Alacritty](https://alacritty.org/)
 
 ## How it works
 
-`Nvim.app` is a small AppleScript-based wrapper around Neovim. It builds the `nvim` command, selects a terminal backend at runtime, and opens Neovim there.
+`Nvim.app` is a small AppleScript wrapper around Neovim. Finder and Spotlight launch the app, which passes the Neovim command to a small runtime terminal selector.
 
-When files are opened through Finder or `open -a Nvim`, their paths are passed to Neovim.
-
-The iTerm2-specific AppleScript is bundled as a runtime resource, so iTerm2 is not part of the build-time dependency chain.
-
-Neovim itself is not bundled.
+Terminal-specific integration is loaded only at runtime. Neovim itself is not bundled.
 
 ## Disclaimer
 
-This is an unofficial project and is not affiliated with or endorsed by Neovim or iTerm2.
+This is an unofficial project and is not affiliated with or endorsed by Neovim or any supported terminal project.
 
 The app icon is derived from the official [Neovim logo assets](https://github.com/neovim/neovim.github.io/tree/master/static/logos).
 
