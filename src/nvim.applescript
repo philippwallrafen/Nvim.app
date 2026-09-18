@@ -7,48 +7,23 @@ on open openedItems
 end open
 
 on launchNvim(openedItems)
-    set nvimCommand to my buildNvimCommand(openedItems)
-
-    if my isItermInstalled() then
-        my runBackend("iterm.applescript", nvimCommand)
-    else
-        my runBackend("terminal.applescript", nvimCommand)
-    end if
-end launchNvim
-
-on buildNvimCommand(openedItems)
     set nvimCommand to "exec nvim"
 
     if (count of openedItems) > 0 then
-        set quotedArgs to {}
+        set args to {}
 
         repeat with openedItem in openedItems
-            set filePath to POSIX path of openedItem
-            set end of quotedArgs to quoted form of filePath
+            set end of args to quoted form of POSIX path of openedItem
         end repeat
 
         set oldDelimiters to AppleScript's text item delimiters
         set AppleScript's text item delimiters to " "
-        set argString to quotedArgs as text
+        set argString to args as text
         set AppleScript's text item delimiters to oldDelimiters
 
         set nvimCommand to nvimCommand & " -- " & argString
     end if
 
-    return nvimCommand
-end buildNvimCommand
-
-on isItermInstalled()
-    try
-        set itermPath to do shell script "/usr/bin/mdfind 'kMDItemCFBundleIdentifier == \"com.googlecode.iterm2\"' | /usr/bin/head -n 1"
-        return itermPath is not ""
-    on error
-        return false
-    end try
-end isItermInstalled
-
-on runBackend(resourceName, nvimCommand)
-    set backendFile to path to resource resourceName
-    set backendSource to read backendFile
-    run script backendSource with parameters {nvimCommand}
-end runBackend
+    set launcher to POSIX path of (path to resource "terminal.sh")
+    do shell script "/bin/sh " & quoted form of launcher & " launch " & quoted form of nvimCommand
+end launchNvim
