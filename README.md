@@ -4,7 +4,7 @@
 
 # Nvim iTerm2 App
 
-A small macOS launcher that opens **Neovim in iTerm2 from Spotlight**.
+A small macOS launcher that opens **Neovim in iTerm2 from Spotlight or Finder**.
 
 Press `⌘ Space`, search for `Nvim`, and hit Enter.
 
@@ -33,6 +33,35 @@ Then launch it with:
 
 macOS may ask for permission to let Nvim control iTerm2 on first launch. Allow it.
 
+## Open files from Finder
+
+After installation, Nvim is registered as an editor for text files.
+
+In Finder, right-click a text file and choose:
+
+```text
+Open With → Nvim
+```
+
+The file opens in Neovim inside a new iTerm2 window.
+
+<!--
+Screenshot placeholder:
+Add docs/images/nvim-open-with.png showing Nvim.app in Finder's Open With context menu.
+
+<p align="center">
+  <img src="docs/images/nvim-open-with.png" alt="Nvim.app in the Finder Open With context menu" width="640">
+</p>
+-->
+
+You can also open a file from the command line:
+
+```sh
+open -a Nvim README.md
+```
+
+To make Nvim the default editor for a file type, select a file in Finder, choose **Get Info**, select **Nvim** under **Open with**, then click **Change All**.
+
 ## Other commands
 
 ```sh
@@ -58,6 +87,8 @@ The prebuilt release is ad-hoc signed, not Apple-notarized. macOS may require **
 ## How it works
 
 `Nvim.app` is a small AppleScript launcher. It opens Neovim in iTerm2 using `exec nvim`, so quitting Neovim ends that terminal session and closes the window.
+
+When files are opened through Finder or `open -a Nvim`, their paths are passed to Neovim.
 
 Neovim itself is not bundled.
 
