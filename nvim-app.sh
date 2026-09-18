@@ -150,7 +150,7 @@ Usage:
   ./nvim-app.sh build
   ./nvim-app.sh install
   ./nvim-app.sh package
-  ./nvim-app.sh terminal [show|choose|auto|ghostty|iterm2|warp|alacritty|terminal]
+  ./nvim-app.sh terminal [show|choose|auto|ghostty|alacritty|tabby|kitty|iterm2|wezterm|rio|terminal]
 
 Commands:
   build     Build dist/Nvim.app
