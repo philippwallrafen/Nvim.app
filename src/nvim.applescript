@@ -7,6 +7,16 @@ on open openedItems
 end open
 
 on launchNvim(openedItems)
+    set nvimCommand to my buildNvimCommand(openedItems)
+
+    if my isItermInstalled() then
+        my runBackend("iterm.applescript", nvimCommand)
+    else
+        my runBackend("terminal.applescript", nvimCommand)
+    end if
+end launchNvim
+
+on buildNvimCommand(openedItems)
     set nvimCommand to "exec nvim"
 
     if (count of openedItems) > 0 then
@@ -25,26 +35,19 @@ on launchNvim(openedItems)
         set nvimCommand to nvimCommand & " -- " & argString
     end if
 
-    set shellCommand to "/bin/zsh -lic " & quoted form of nvimCommand
-    set wasRunning to application "iTerm2" is running
+    return nvimCommand
+end buildNvimCommand
 
-    tell application "iTerm2"
-        launch
+on isItermInstalled()
+    try
+        set itermPath to do shell script "/usr/bin/mdfind 'kMDItemCFBundleIdentifier == \"com.googlecode.iterm2\"' | /usr/bin/head -n 1"
+        return itermPath is not ""
+    on error
+        return false
+    end try
+end isItermInstalled
 
-        if wasRunning then
-            create window with default profile command shellCommand
-        else
-            delay 0.5
-
-            if (count of windows) > 0 then
-                tell current session of current window
-                    write text nvimCommand
-                end tell
-            else
-                create window with default profile command shellCommand
-            end if
-        end if
-
-        activate
-    end tell
-end launchNvim
+on runBackend(resourceName, nvimCommand)
+    set backendPath to POSIX path of (path to resource resourceName)
+    do shell script "/usr/bin/osascript " & quoted form of backendPath & " " & quoted form of nvimCommand
+end runBackend
