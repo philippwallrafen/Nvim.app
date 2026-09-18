@@ -4,11 +4,11 @@
 
 # Nvim iTerm2 App
 
-A small macOS launcher that opens **Neovim in iTerm2 from Spotlight or Finder**.
+A small macOS launcher that opens **Neovim from Spotlight or Finder**. It uses iTerm2 when available and falls back to Terminal.app.
 
 Press `⌘ Space`, search for `Nvim`, and hit Enter.
 
-When you quit Neovim with `:q`, the iTerm2 window closes with it.
+When you quit Neovim with `:q`, the terminal session ends.
 
 ## Installation
 
@@ -16,6 +16,8 @@ Recommended: build and install locally.
 
 ```sh
 brew install neovim
+
+# Optional: Nvim uses Terminal.app when iTerm2 is not installed.
 brew install --cask iterm2
 
 git clone https://github.com/philippwallrafen/nvim-iterm2-app.git
@@ -31,7 +33,7 @@ Then launch it with:
 ⌘ Space → Nvim → Enter
 ```
 
-macOS may ask for permission to let Nvim control iTerm2 on first launch. Allow it.
+macOS may ask for permission to let Nvim control iTerm2 or Terminal on first launch. Allow it.
 
 ## Open files from Finder
 
@@ -43,7 +45,7 @@ In Finder, right-click a text file and choose:
 Open With → Nvim
 ```
 
-The file opens in Neovim inside a new iTerm2 window.
+The file opens in Neovim inside iTerm2 when it is installed, otherwise in Terminal.app.
 
 <!--
 Screenshot placeholder:
@@ -72,6 +74,8 @@ To make Nvim the default editor for a file type, select a file in Finder, choose
 - `build` creates `dist/Nvim.app`
 - `package` creates `dist/Nvim.app.zip`
 
+The build only requires macOS. iTerm2 is a runtime option and is not required to construct the app bundle.
+
 ## Prebuilt release
 
 You can also download `Nvim.app.zip` from the latest GitHub Release, extract it, and move `Nvim.app` to `/Applications`.
@@ -82,11 +86,13 @@ The prebuilt release is ad-hoc signed, not Apple-notarized. macOS may require **
 
 - macOS
 - [Neovim](https://neovim.io/)
-- [iTerm2](https://iterm2.com/)
+- [iTerm2](https://iterm2.com/) (optional; Terminal.app is used otherwise)
 
 ## How it works
 
-`Nvim.app` is a small AppleScript launcher. It opens Neovim in iTerm2 using `exec nvim`, so quitting Neovim ends that terminal session and closes the window.
+`Nvim.app` is a small AppleScript launcher. It builds the `nvim` command, then selects a terminal backend at runtime.
+
+If iTerm2 is installed, Nvim uses it. Otherwise it uses the built-in Terminal.app. The iTerm2-specific AppleScript is bundled as a runtime resource, so iTerm2 is not needed when building `Nvim.app`.
 
 When files are opened through Finder or `open -a Nvim`, their paths are passed to Neovim.
 
