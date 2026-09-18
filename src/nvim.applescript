@@ -48,6 +48,7 @@ on isItermInstalled()
 end isItermInstalled
 
 on runBackend(resourceName, nvimCommand)
-    set backendPath to POSIX path of (path to resource resourceName)
-    do shell script "/usr/bin/osascript " & quoted form of backendPath & " " & quoted form of nvimCommand
+    set backendFile to path to resource resourceName
+    set backendSource to read backendFile
+    run script backendSource with parameters {nvimCommand}
 end runBackend
