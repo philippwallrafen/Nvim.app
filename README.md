@@ -6,7 +6,7 @@
 
 A macOS app wrapper for Neovim.
 
-Launch Neovim from Spotlight, Finder, or the command line using Terminal.app, Ghostty, iTerm2, Warp, or Alacritty.
+Launch Neovim from Spotlight, Finder, or the command line using Terminal.app, Ghostty, Alacritty, Tabby, Kitty, iTerm2, WezTerm, or Rio.
 
 ## Installation
 
@@ -32,9 +32,12 @@ Supported terminals:
 
 - Terminal.app
 - Ghostty
-- iTerm2
-- Warp
 - Alacritty
+- Tabby
+- Kitty
+- iTerm2
+- WezTerm
+- Rio
 
 No third-party terminal is required.
 
@@ -60,9 +63,12 @@ Set one explicitly:
 
 ```sh
 ./nvim-app.sh terminal ghostty
-./nvim-app.sh terminal iterm2
-./nvim-app.sh terminal warp
 ./nvim-app.sh terminal alacritty
+./nvim-app.sh terminal tabby
+./nvim-app.sh terminal kitty
+./nvim-app.sh terminal iterm2
+./nvim-app.sh terminal wezterm
+./nvim-app.sh terminal rio
 ./nvim-app.sh terminal terminal
 ```
 
@@ -140,9 +146,12 @@ The prebuilt release is ad-hoc signed, not Apple-notarized. macOS may require **
 Optional terminal integrations:
 
 - [Ghostty](https://ghostty.org/)
-- [iTerm2](https://iterm2.com/)
-- [Warp](https://www.warp.dev/)
 - [Alacritty](https://alacritty.org/)
+- [Tabby](https://tabby.sh/)
+- [Kitty](https://sw.kovidgoyal.net/kitty/)
+- [iTerm2](https://iterm2.com/)
+- [WezTerm](https://wezterm.org/)
+- [Rio](https://rioterm.com/)
 
 ## How it works
 
