@@ -57,7 +57,7 @@ jobs:
           TAG="${GITHUB_REF_NAME}"
 
           if [[ "$TAG" == "v0.3" ]]; then
-            NOTES='Adds Ghostty, iTerm2, Warp, Alacritty, and Terminal.app support. Nvim.app now prompts when multiple terminals are installed, remembers the selected terminal, and uses the new io.github.philippwallrafen.nvim-app bundle/settings identifier.'
+            NOTES='Adds clean integrations for Ghostty, Alacritty, Tabby, Kitty, iTerm2, WezTerm, Rio, and Terminal.app. Nvim.app prompts when multiple supported terminals are installed, remembers the selected terminal, and uses the io.github.philippwallrafen.nvim-app bundle/settings identifier.'
             gh release create "$TAG" dist/Nvim.app.zip --title "Nvim.app $TAG" --notes "$NOTES"
           else
             gh release create "$TAG" dist/Nvim.app.zip --title "Nvim.app $TAG" --generate-notes
