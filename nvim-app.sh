@@ -53,6 +53,11 @@ build_app() {
         "$ROOT/assets/Nvim.icns" \
         "$BUILT_APP/Contents/Resources/Nvim.icns"
 
+    cp \
+        "$ROOT/src/backends/iterm.applescript" \
+        "$ROOT/src/backends/terminal.applescript" \
+        "$BUILT_APP/Contents/Resources/"
+
     rm -f \
         "$BUILT_APP/Contents/Resources/applet.icns" \
         "$BUILT_APP/Contents/Resources/Assets.car"
@@ -64,7 +69,7 @@ build_app() {
     set_string CFBundleVersion "$VERSION"
     set_string CFBundleIconFile "Nvim"
     set_string NSAppleEventsUsageDescription \
-        "Nvim uses Apple Events to open Neovim in iTerm2."
+        "Nvim uses Apple Events to open Neovim in iTerm2 or Terminal."
 
     set_document_types
 
