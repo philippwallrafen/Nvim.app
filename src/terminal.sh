@@ -30,9 +30,36 @@ name() {
     esac
 }
 
+app_bundle() {
+    case "$1" in
+        ghostty) echo Ghostty ;;
+        alacritty) echo Alacritty ;;
+        tabby) echo Tabby ;;
+        kitty) echo kitty ;;
+        iterm2) echo iTerm ;;
+        wezterm) echo WezTerm ;;
+        rio) echo Rio ;;
+    esac
+}
+
 app_path() {
-    /usr/bin/mdfind "kMDItemCFBundleIdentifier == '$(bundle_id "$1")'" |
-        /usr/bin/head -n 1
+    path="$(
+        /usr/bin/mdfind "kMDItemCFBundleIdentifier == '$(bundle_id "$1")'" |
+            /usr/bin/head -n 1
+    )"
+
+    if [ -n "$path" ]; then
+        echo "$path"
+        return
+    fi
+
+    for base in /Applications "$HOME/Applications"; do
+        path="$base/$(app_bundle "$1").app"
+        if [ -d "$path" ]; then
+            echo "$path"
+            return
+        fi
+    done
 }
 
 installed() {
@@ -155,7 +182,7 @@ launch() {
             launch_cli "$terminal" -e /bin/zsh -lic "$1"
             ;;
         tabby)
-            launch_cli tabby run "$1"
+            launch_cli tabby run /bin/zsh -lic "$1"
             ;;
         kitty)
             launch_cli kitty /bin/zsh -lic "$1"
