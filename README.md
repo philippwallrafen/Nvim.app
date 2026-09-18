@@ -2,13 +2,13 @@
   <img src="docs/images/nvim-app.png" alt="Nvim.app in the macOS Applications folder" width="640">
 </p>
 
-# Nvim iTerm2 App
+# Nvim.app
 
-A small macOS launcher that opens **Neovim from Spotlight or Finder**. It uses iTerm2 when available and falls back to Terminal.app.
+A macOS app wrapper for Neovim, with optional iTerm2 integration.
+
+Launch Neovim from Spotlight, Finder, or the command line without opening a terminal first. Nvim.app uses iTerm2 when it is installed and falls back to the built-in Terminal.app otherwise.
 
 Press `⌘ Space`, search for `Nvim`, and hit Enter.
-
-When you quit Neovim with `:q`, the terminal session ends.
 
 ## Installation
 
@@ -17,7 +17,7 @@ Recommended: build and install locally.
 ```sh
 brew install neovim
 
-# Optional: Nvim uses Terminal.app when iTerm2 is not installed.
+# Optional: use iTerm2 instead of Terminal.app.
 brew install --cask iterm2
 
 git clone https://github.com/philippwallrafen/nvim-iterm2-app.git
@@ -45,7 +45,7 @@ In Finder, right-click a text file and choose:
 Open With → Nvim
 ```
 
-The file opens in Neovim inside iTerm2 when it is installed, otherwise in Terminal.app.
+The file opens in Neovim using iTerm2 when available, otherwise Terminal.app.
 
 <!--
 Screenshot placeholder:
@@ -64,6 +64,15 @@ open -a Nvim README.md
 
 To make Nvim the default editor for a file type, select a file in Finder, choose **Get Info**, select **Nvim** under **Open with**, then click **Change All**.
 
+## Terminal integration
+
+Nvim.app chooses a terminal backend at runtime:
+
+- **iTerm2** when it is installed
+- **Terminal.app** otherwise
+
+iTerm2 is optional and is not required to build or install Nvim.app.
+
 ## Other commands
 
 ```sh
@@ -74,7 +83,7 @@ To make Nvim the default editor for a file type, select a file in Finder, choose
 - `build` creates `dist/Nvim.app`
 - `package` creates `dist/Nvim.app.zip`
 
-The build only requires macOS. iTerm2 is a runtime option and is not required to construct the app bundle.
+The build only requires macOS. Terminal-specific integration is loaded at runtime.
 
 ## Prebuilt release
 
@@ -86,15 +95,15 @@ The prebuilt release is ad-hoc signed, not Apple-notarized. macOS may require **
 
 - macOS
 - [Neovim](https://neovim.io/)
-- [iTerm2](https://iterm2.com/) (optional; Terminal.app is used otherwise)
+- [iTerm2](https://iterm2.com/) (optional)
 
 ## How it works
 
-`Nvim.app` is a small AppleScript launcher. It builds the `nvim` command, then selects a terminal backend at runtime.
-
-If iTerm2 is installed, Nvim uses it. Otherwise it uses the built-in Terminal.app. The iTerm2-specific AppleScript is bundled as a runtime resource, so iTerm2 is not needed when building `Nvim.app`.
+`Nvim.app` is a small AppleScript-based wrapper around Neovim. It builds the `nvim` command, selects a terminal backend at runtime, and opens Neovim there.
 
 When files are opened through Finder or `open -a Nvim`, their paths are passed to Neovim.
+
+The iTerm2-specific AppleScript is bundled as a runtime resource, so iTerm2 is not part of the build-time dependency chain.
 
 Neovim itself is not bundled.
 
