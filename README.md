@@ -13,8 +13,8 @@ Launch Neovim from Spotlight, Finder, or the command line using Terminal.app, Gh
 ```sh
 brew install neovim
 
-git clone https://github.com/philippwallrafen/Nvim.app.git
-cd Nvim.app
+git clone https://github.com/philippwallrafen/Nvim.app.git nvim-app
+cd nvim-app
 ./nvim-app.sh install
 ```
 
