@@ -45,6 +45,8 @@ build_app() {
     mkdir -p "$DIST"
     rm -rf "$BUILT_APP"
 
+    /bin/sh -n "$ROOT/src/terminal.sh"
+
     osacompile \
         -o "$BUILT_APP" \
         "$ROOT/src/nvim.applescript"
