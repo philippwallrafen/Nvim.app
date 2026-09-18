@@ -27,6 +27,9 @@ jobs:
             exit 1
           fi
 
+      - name: Validate launcher
+        run: /bin/sh -n src/terminal.sh
+
       - name: Build package
         run: |
           chmod +x ./nvim-app.sh
@@ -39,10 +42,11 @@ jobs:
           plutil -lint dist/Nvim.app/Contents/Info.plist
 
           APP_VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' dist/Nvim.app/Contents/Info.plist)"
+          APP_ID="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' dist/Nvim.app/Contents/Info.plist)"
 
           test "$APP_VERSION" = "$(cat VERSION)"
-          test -f dist/Nvim.app/Contents/Resources/iterm.applescript
-          test -f dist/Nvim.app/Contents/Resources/terminal.applescript
+          test "$APP_ID" = "io.github.philippwallrafen.nvim-app"
+          test -f dist/Nvim.app/Contents/Resources/terminal.sh
           test -f dist/Nvim.app.zip
 
       - name: Create GitHub release
@@ -52,8 +56,8 @@ jobs:
         run: |
           TAG="${GITHUB_REF_NAME}"
 
-          if [[ "$TAG" == "v0.2" ]]; then
-            NOTES='Nvim.app is now a macOS app wrapper for Neovim with optional iTerm2 integration. It supports Finder “Open With”, uses iTerm2 when available, falls back to Terminal.app, and no longer requires iTerm2 at build time.'
+          if [[ "$TAG" == "v0.3" ]]; then
+            NOTES='Adds Ghostty, iTerm2, Warp, Alacritty, and Terminal.app support. Nvim.app now prompts when multiple terminals are installed, remembers the selected terminal, and uses the new io.github.philippwallrafen.nvim-app bundle/settings identifier.'
             gh release create "$TAG" dist/Nvim.app.zip --title "Nvim.app $TAG" --notes "$NOTES"
           else
             gh release create "$TAG" dist/Nvim.app.zip --title "Nvim.app $TAG" --generate-notes
