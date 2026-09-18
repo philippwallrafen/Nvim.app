@@ -23,6 +23,24 @@ set_string() {
         "$plist"
 }
 
+set_document_types() {
+    plist="$BUILT_APP/Contents/Info.plist"
+
+    /usr/libexec/PlistBuddy \
+        -c "Delete :CFBundleDocumentTypes" \
+        "$plist" 2>/dev/null || true
+
+    /usr/libexec/PlistBuddy \
+        -c "Add :CFBundleDocumentTypes array" \
+        -c "Add :CFBundleDocumentTypes:0 dict" \
+        -c "Add :CFBundleDocumentTypes:0:CFBundleTypeName string Text" \
+        -c "Add :CFBundleDocumentTypes:0:CFBundleTypeRole string Editor" \
+        -c "Add :CFBundleDocumentTypes:0:LSHandlerRank string Alternate" \
+        -c "Add :CFBundleDocumentTypes:0:LSItemContentTypes array" \
+        -c "Add :CFBundleDocumentTypes:0:LSItemContentTypes:0 string public.text" \
+        "$plist"
+}
+
 build_app() {
     mkdir -p "$DIST"
     rm -rf "$BUILT_APP"
@@ -47,6 +65,8 @@ build_app() {
     set_string CFBundleIconFile "Nvim"
     set_string NSAppleEventsUsageDescription \
         "Nvim uses Apple Events to open Neovim in iTerm2."
+
+    set_document_types
 
     /usr/libexec/PlistBuddy \
         -c "Delete :CFBundleIconName" \
